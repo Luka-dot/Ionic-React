@@ -1,6 +1,6 @@
 import React from 'react';
-import { IonApp, IonHeader, IonContent, IonToolbar, IonTitle, IonGrid, IonCol, IonRow, IonItem, IonLabel, IonInput } from '@ionic/react';
-
+import { IonApp, IonHeader, IonContent, IonToolbar, IonTitle, IonGrid, IonCol, IonRow, IonItem, IonLabel, IonInput, IonButton, IonIcon } from '@ionic/react';
+import { calculatorOutline, refreshOutline } from "ionicons/icons";
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
 
@@ -27,7 +27,7 @@ const App: React.FC = () => (
         <IonTitle>BMI Calculator</IonTitle>
       </IonToolbar>
     </IonHeader>
-    <IonContent>
+    <IonContent className="ion-padding">
       <IonGrid>
         <IonRow>
           <IonCol>
@@ -43,6 +43,25 @@ const App: React.FC = () => (
               <IonLabel position="floating">Your Weight</IonLabel>
               <IonInput></IonInput>
             </IonItem>
+          </IonCol>
+        </IonRow>
+        <IonRow>
+          <IonCol className="ion-text-left">
+            <IonButton>
+              <IonIcon slot="start" icon={calculatorOutline} />
+              Calculate !!!
+            </IonButton>
+          </IonCol>
+          <IonCol className="ion-text-right">
+            <IonButton>
+              <IonIcon slot="start" icon={refreshOutline} />
+              Reset !!!
+            </IonButton>
+          </IonCol>
+        </IonRow>
+        <IonRow>
+          <IonCol>
+
           </IonCol>
         </IonRow>
       </IonGrid>
