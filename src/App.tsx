@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { IonApp, IonHeader, IonContent, IonToolbar, IonTitle, IonGrid, IonCol, IonRow, IonItem, IonLabel, IonInput, IonButton, IonIcon } from '@ionic/react';
 import { calculatorOutline, refreshOutline } from "ionicons/icons";
 /* Core CSS required for Ionic components to work properly */
@@ -20,7 +20,30 @@ import '@ionic/react/css/display.css';
 /* Theme variables */
 import './theme/variables.css';
 
-const App: React.FC = () => (
+const App: React.FC = () => {
+  const weightInputRef = useRef<HTMLIonInputElement>(null);
+  const heightInputRef = useRef<HTMLIonInputElement>(null);
+
+  const calculateBMI = () => {
+    const enteredWeight = weightInputRef.current!.value;
+    const enteredHeight = heightInputRef.current!.value;
+
+    if (!enteredHeight || !enteredWeight) {
+      return;
+    }
+
+    const bmi = +enteredWeight / (+enteredHeight * +enteredWeight);
+
+    console.log(bmi)
+  };
+
+  const resetInput = () => {
+    weightInputRef.current!.value = '';
+    heightInputRef.current!.value = '';
+  };
+
+
+  return (
   <IonApp>
     <IonHeader>
       <IonToolbar>
@@ -33,7 +56,7 @@ const App: React.FC = () => (
           <IonCol>
             <IonItem>
               <IonLabel position="floating">Your Height</IonLabel>
-              <IonInput></IonInput>
+              <IonInput ref={heightInputRef}></IonInput>
             </IonItem>
           </IonCol>
         </IonRow>
@@ -41,19 +64,19 @@ const App: React.FC = () => (
           <IonCol>
           <IonItem>
               <IonLabel position="floating">Your Weight</IonLabel>
-              <IonInput></IonInput>
+              <IonInput ref={weightInputRef}></IonInput>
             </IonItem>
           </IonCol>
         </IonRow>
         <IonRow>
           <IonCol className="ion-text-left">
-            <IonButton>
+            <IonButton onClick={calculateBMI}>
               <IonIcon slot="start" icon={calculatorOutline} />
               Calculate !!!
             </IonButton>
           </IonCol>
           <IonCol className="ion-text-right">
-            <IonButton>
+            <IonButton onClick={resetInput}>
               <IonIcon slot="start" icon={refreshOutline} />
               Reset !!!
             </IonButton>
@@ -67,6 +90,7 @@ const App: React.FC = () => (
       </IonGrid>
     </IonContent>
   </IonApp>
-);
+  )
+};
 
 export default App;
