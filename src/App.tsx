@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { IonApp, IonHeader, IonContent, IonToolbar, IonTitle, IonGrid, IonCol, IonRow, IonItem, IonLabel, IonInput, IonAlert } from '@ionic/react';
+import { IonApp, IonHeader, IonContent, IonToolbar, IonTitle, IonGrid, IonCol, IonRow, IonItem, IonLabel, IonInput, IonAlert, IonCard, IonCardContent } from '@ionic/react';
 
 import BmiControls from './components/BmiControls';
 import BmiResolve from './components/BmiResolve';
@@ -25,7 +25,7 @@ import InputControl from './components/InputControl';
 
 const App: React.FC = () => {
   const [calculatedBmi, setCalculatedBmi] = useState<number>();
-  const [ error, setError ] = useState<string>();
+  const [error, setError] = useState<string>();
   const [calUnits, setCalUnits] = useState<'mkg' | 'ftlbs'>('mkg');
 
   const weightInputRef = useRef<HTMLIonInputElement>(null);
@@ -66,40 +66,54 @@ const App: React.FC = () => {
 
   return (
     <React.Fragment>
-      <IonAlert isOpen={!!error} message={error} buttons={[{text: 'okay', handler: clearError}]} />
+      <IonAlert isOpen={!!error} message={error} buttons={[{ text: 'okay', handler: clearError }]} />
       <IonApp>
         <IonHeader>
           <IonToolbar color="primary">
             <IonTitle>BMI Calculator</IonTitle>
           </IonToolbar>
         </IonHeader>
-        <IonContent className="ion-padding">
+        <IonContent className="ion-no-padding">
           <IonGrid>
             <IonRow>
-              <IonCol>
-                <InputControl selectedValue={calUnits} onSelectValue={selectCalcUnitHandler}/>
+              <IonCol size-sm="8" offset-sm="2" size-md="6" offset-md="3" className="ion-no-padding">
+                <IonCard className="ion-no-margin">
+                  <IonCardContent>
+                    <IonGrid className="ion-no-padding">
+                      <IonRow>
+                        <IonCol>
+                          <InputControl selectedValue={calUnits} onSelectValue={selectCalcUnitHandler} />
+                        </IonCol>
+                      </IonRow>
+                      <IonRow>
+                        <IonCol>
+                          <IonItem>
+                            <IonLabel position="floating">Your Height ({calUnits === 'mkg' ? 'meters' : 'feet'})</IonLabel>
+                            <IonInput type="number" ref={heightInputRef}></IonInput>
+                          </IonItem>
+                        </IonCol>
+                      </IonRow>
+                      <IonRow>
+                        <IonCol>
+                          <IonItem>
+                            <IonLabel position="floating">Your Weight ({calUnits === 'mkg' ? 'kg' : 'lbs'})</IonLabel>
+                            <IonInput type="number" ref={weightInputRef}></IonInput>
+                          </IonItem>
+                        </IonCol>
+                      </IonRow>
+                      <BmiControls onCalculate={calculateBMI} onReset={resetInput} />
+                    </IonGrid>
+                  </IonCardContent>
+                </IonCard>
               </IonCol>
             </IonRow>
             <IonRow>
               <IonCol>
-                <IonItem>
-                  <IonLabel position="floating">Your Height ({calUnits === 'mkg' ? 'meters' : 'feet'})</IonLabel>
-                  <IonInput type="number" ref={heightInputRef}></IonInput>
-                </IonItem>
+                {calculatedBmi && (
+                  <BmiResolve result={calculatedBmi} />
+                )}
               </IonCol>
             </IonRow>
-            <IonRow>
-              <IonCol>
-                <IonItem>
-                  <IonLabel position="floating">Your Weight ({calUnits === 'mkg' ? 'kg' : 'lbs'})</IonLabel>
-                  <IonInput type="number" ref={weightInputRef}></IonInput>
-                </IonItem>
-              </IonCol>
-            </IonRow>
-            <BmiControls onCalculate={calculateBMI} onReset={resetInput} />
-            {calculatedBmi && (
-              <BmiResolve result={calculatedBmi} />
-            )}
           </IonGrid>
         </IonContent>
       </IonApp>
